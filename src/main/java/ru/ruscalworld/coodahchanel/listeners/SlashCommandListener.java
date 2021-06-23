@@ -8,7 +8,6 @@ import ru.ruscalworld.coodahchanel.CoodahChanel;
 public class SlashCommandListener extends ListenerAdapter {
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        event.deferReply().queue();
         CoodahChanel.getInstance().getCommandDispatcher().dispatch(event);
     }
 }

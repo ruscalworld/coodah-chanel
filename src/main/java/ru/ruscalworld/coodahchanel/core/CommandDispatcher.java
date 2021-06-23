@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,18 +23,17 @@ public class CommandDispatcher {
     }
 
     public void dispatch(SlashCommandEvent event) {
-        ProvidedCommand command = this.getRegisteredCommand(event.getCommandId());
+        ProvidedCommand command = this.getRegisteredCommand(event.getName());
         if (command == null) return;
+        event.deferReply().queue();
         command.execute(event);
     }
 
     public void registerCommands(Object object) {
         for (Method method : object.getClass().getDeclaredMethods()) {
             if (!method.isAnnotationPresent(Command.class)) continue;
-            this.registeredCommands.put(
-                    method.getName().toLowerCase(Locale.ROOT),
-                    new ProvidedCommand(object, method)
-            );
+            ProvidedCommand command = new ProvidedCommand(object, method);
+            this.registeredCommands.put(command.getName(), command);
         }
     }
 
