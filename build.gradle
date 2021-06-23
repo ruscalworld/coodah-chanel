@@ -1,6 +1,20 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+    }
+}
+
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
+
+apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'ru.ruscalworld.coodahchanel'
 version '1.0'
@@ -26,6 +40,14 @@ dependencies {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+shadowJar {
+    dependencies {
+        include(dependency(".*:.*"))
+    }
+}
+
+assemble.dependsOn(shadowJar)
 
 test {
     useJUnitPlatform()
