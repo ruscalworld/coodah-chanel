@@ -1,12 +1,14 @@
 package ru.ruscalworld.coodahchanel.commands;
 
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import ru.ruscalworld.coodahchanel.core.Argument;
 import ru.ruscalworld.coodahchanel.core.Command;
 
-public class IsCock {
+public class CockChecker {
     @Command(description = "Проверяет, является ли петухом указанный пользователь", arguments = {
             @Argument(
                     type = OptionType.USER, name = "user", required = true,
@@ -14,12 +16,12 @@ public class IsCock {
             )
     })
     public void isCock(SlashCommandEvent event) {
-        Message message = event.getHook().sendMessage("Test message").complete();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        message.editMessage("hm").queue();
+        OptionMapping option = event.getOption("user");
+        assert option != null;
+        User user = option.getAsUser();
+        long id = user.getIdLong();
+        System.out.println(id);
+        System.out.println(id % 2);
+        Message message = event.getHook().sendMessage(id % 2 == 1 ? "Да" : "Нет").complete();
     }
 }
