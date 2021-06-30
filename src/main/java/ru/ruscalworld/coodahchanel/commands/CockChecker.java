@@ -1,12 +1,12 @@
 package ru.ruscalworld.coodahchanel.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import ru.ruscalworld.coodahchanel.CoodahChanel;
 import ru.ruscalworld.coodahchanel.core.Argument;
 import ru.ruscalworld.coodahchanel.core.Command;
 
@@ -29,13 +29,29 @@ public class CockChecker {
         long id = user.getIdLong();
 
         CompletableFuture.runAsync(() -> {
-            Message message = event.getHook().sendMessageEmbeds(makeWaitEmbed(user)).complete();
+            Message message = null;
+
+            if (event.isFromGuild()) {
+                SelfUser selfUser = CoodahChanel.getInstance().getJDA().getSelfUser();
+
+                assert event.getGuild() != null;
+                Member selfMember = event.getGuild().getMember(selfUser);
+                assert selfMember != null;
+
+                if (selfMember.hasPermission(event.getGuildChannel(), Permission.MESSAGE_READ)) {
+                    message = event.getHook().sendMessageEmbeds(makeWaitEmbed(user)).complete();
+                }
+            } else {
+                message = event.getHook().sendMessageEmbeds(makeWaitEmbed(user)).complete();
+            }
+
             Random random = new Random();
             random.setSeed(System.currentTimeMillis());
             int delay = random.nextInt(5000) + 5000;
             try {
                 Thread.sleep(delay);
-                message.editMessageEmbeds(makeResultEmbed(user, id % 2 == 1, delay)).queue();
+                if (message != null) message.editMessageEmbeds(makeResultEmbed(user, id % 2 == 1, delay)).queue();
+                else event.getHook().sendMessageEmbeds(makeResultEmbed(user, id % 2 == 1, delay)).queue();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
