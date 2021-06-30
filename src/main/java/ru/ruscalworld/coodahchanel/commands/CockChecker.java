@@ -39,6 +39,9 @@ public class CockChecker {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }).exceptionally(e -> {
+            e.printStackTrace();
+            return null;
         });
     }
 
