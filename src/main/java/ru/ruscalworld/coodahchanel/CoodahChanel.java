@@ -2,6 +2,7 @@ package ru.ruscalworld.coodahchanel;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import ru.ruscalworld.coodahchanel.commands.CockChecker;
 import ru.ruscalworld.coodahchanel.commands.InfoCommand;
 import ru.ruscalworld.coodahchanel.core.CommandDispatcher;
@@ -24,6 +25,7 @@ public class CoodahChanel {
         String token = System.getenv("CC_BOT_TOKEN");
         JDABuilder builder = JDABuilder.createDefault(token);
         builder.addEventListeners(new SlashCommandListener());
+        builder.setActivity(Activity.watching("на петушков"));
         instance = new CoodahChanel(builder.build().awaitReady());
     }
 
