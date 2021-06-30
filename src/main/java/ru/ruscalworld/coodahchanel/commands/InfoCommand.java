@@ -16,7 +16,7 @@ public class InfoCommand {
         builder.setDescription(
                 "Нейросеть, позволяющая определить, является ли пользователь Discord петухом. " +
                         "Для достижения максимальной точности проверок бот использует более 50 различных параметров каждого участника " +
-                        "и обучена на " + (System.currentTimeMillis() / 0xFFFF) + " различных пользователях."
+                        "и обучена на " + (System.currentTimeMillis() / 0xFFFFFF) + " различных пользователях."
         );
 
         event.getHook().sendMessageEmbeds(builder.build()).addActionRow(
