@@ -3,6 +3,7 @@ package ru.ruscalworld.coodahchanel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import ru.ruscalworld.coodahchanel.commands.CockChecker;
+import ru.ruscalworld.coodahchanel.commands.InfoCommand;
 import ru.ruscalworld.coodahchanel.core.CommandDispatcher;
 import ru.ruscalworld.coodahchanel.listeners.SlashCommandListener;
 
@@ -29,6 +30,7 @@ public class CoodahChanel {
     public void onStart() {
         CommandDispatcher dispatcher = this.getCommandDispatcher();
         dispatcher.registerCommands(new CockChecker());
+        dispatcher.registerCommands(new InfoCommand());
         dispatcher.updateBotCommands(this.getJDA());
     }
 
