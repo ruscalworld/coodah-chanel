@@ -50,8 +50,9 @@ public class CockChecker {
             int delay = random.nextInt(5000) + 5000;
             try {
                 Thread.sleep(delay);
-                if (message != null) message.editMessageEmbeds(makeResultEmbed(user, id % 2 == 1, delay)).queue();
-                else event.getHook().sendMessageEmbeds(makeResultEmbed(user, id % 2 == 1, delay)).queue();
+                MessageEmbed embed = makeResultEmbed(user, id % 2 == 1, delay);
+                if (message != null) message.editMessageEmbeds(embed).queue();
+                else event.getHook().sendMessageEmbeds(embed).queue();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
