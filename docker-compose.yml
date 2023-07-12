@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  bot:
+    image: ghcr.io/ruscalworld/coodah-chanel:nightly
+    restart: unless-stopped
+    env_file: .env
